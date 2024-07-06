@@ -1,29 +1,21 @@
 // assets
-import { IconBrandChrome, IconHelp } from '@tabler/icons-react';
+import { IconBell } from '@tabler/icons-react';
+import Constants from '../constants'
 
 // constant
-const icons = { IconBrandChrome, IconHelp };
+const icons = { IconBell };
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
 const other = {
-  id: 'sample-docs-roadmap',
+  title:'Other',
   type: 'group',
   children: [
     {
-      id: 'sample-page',
-      title: 'Sample Page',
+      title: '프로모션 쿠폰 목록',
       type: 'item',
-      url: '/sample-page',
-      icon: icons.IconBrandChrome,
-      breadcrumbs: false
-    },
-    {
-      id: 'documentation',
-      title: 'Documentation',
-      type: 'item',
-      url: 'https://codedthemes.gitbook.io/berry/',
-      icon: icons.IconHelp,
+      url: Constants.promo_list,
+      icon: icons.IconBell,
       external: true,
       target: true
     }

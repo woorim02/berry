@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from "react-helmet-async";
 
 // third party
 import { configureStore } from '@reduxjs/toolkit';
@@ -36,7 +37,9 @@ const store = configureStore({ reducer });
 
 root.render(
   <Provider store={store}>
-    <App />
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
   </Provider>
 );
 
