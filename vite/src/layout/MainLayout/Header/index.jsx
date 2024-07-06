@@ -8,9 +8,6 @@ import ButtonBase from '@mui/material/ButtonBase';
 
 // project imports
 import LogoSection from '../LogoSection';
-import SearchSection from './SearchSection';
-import NotificationSection from './NotificationSection';
-import ProfileSection from './ProfileSection';
 
 // assets
 import { IconMenu2 } from '@tabler/icons-react';
@@ -32,7 +29,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
           }
         }}
       >
-        <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
+        <Box component="span" sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1 }}>
           <LogoSection />
         </Box>
         <ButtonBase sx={{ borderRadius: '8px', overflow: 'hidden' }}>

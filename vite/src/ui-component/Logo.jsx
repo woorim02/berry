@@ -22,7 +22,7 @@ const Logo = () => {
         style={{ width: fontWeight, height: fontWeight, borderRadius: '10px' }}
       />
       &nbsp;&nbsp;
-      <h1 style={{ fontSize: '20px', fontFamily: 'Roboto, sans-serif', fontWeight: '600', margin: '0' }}>
+      <h1 style={{ fontSize: '20px', fontFamily: 'Roboto, sans-serif', fontWeight: '600', marginRight: '5px' }}>
         CGV 도우미
       </h1>
     </div>
