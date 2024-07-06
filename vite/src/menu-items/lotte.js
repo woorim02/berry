@@ -8,10 +8,12 @@ const icons = { IconStack2, IconNotification, IconGift };
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const lotte = {
+  id: 'lotte',
   title: '롯데시네마',
   type: 'group',
   children: [
     {
+      id: 'lotteEventList',
       title: '이벤트 목록',
       type: 'item',
       url: Constants.lotte_event,
@@ -19,6 +21,7 @@ const lotte = {
       breadcrumbs: false
     },
     {
+      id: 'lotteGiveawayEventList',
       title: '경품 이벤트 현황',
       type: 'item',
       url: Constants.lotte_event_giveaway,

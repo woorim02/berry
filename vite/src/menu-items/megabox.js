@@ -8,10 +8,12 @@ const icons = { IconStack2, IconGift };
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const megabox = {
+  id: 'megabox',
   title: '메가박스',
   type: 'group',
   children: [
     {
+      id: 'megaboxGiveawayEventList',
       title: '경품 이벤트 현황',
       type: 'item',
       url: Constants.event_giveaway,
