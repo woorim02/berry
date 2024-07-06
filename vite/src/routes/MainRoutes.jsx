@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import Home from 'views/Home';
+import CgvEventPage from 'views/cgv/event/EventPage';
 
 
 
@@ -17,6 +18,15 @@ const MainRoutes = {
       path: '/',
       element: <Home />
     },
+    {
+      path: 'cgv',
+      children:[
+        {
+          path: 'event',
+          element: <CgvEventPage/>
+        }
+      ]
+    }
   ]
 };
 
