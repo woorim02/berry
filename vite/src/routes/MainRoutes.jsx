@@ -2,9 +2,9 @@ import { lazy } from 'react';
 
 // project imports
 import MainLayout from 'layout/MainLayout';
-import Loadable from 'ui-component/Loadable';
 import Home from 'views/Home';
 import CgvEventPage from 'views/cgv/event/EventPage';
+import CgvGiveawayPage from 'views/cgv/event/giveaway/GiveawayPage';
 
 
 
@@ -19,13 +19,12 @@ const MainRoutes = {
       element: <Home />
     },
     {
-      path: 'cgv',
-      children:[
-        {
-          path: 'event',
-          element: <CgvEventPage/>
-        }
-      ]
+      path: 'cgv/event',
+      element: <CgvEventPage/>
+    },
+    {
+      path: 'cgv/event/giveaway',
+      element: <CgvGiveawayPage/>,
     }
   ]
 };
