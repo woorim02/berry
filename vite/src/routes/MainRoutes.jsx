@@ -7,6 +7,7 @@ import CgvEventPage from 'views/cgv/event/EventPage';
 import CgvGiveawayPage from 'views/cgv/event/giveaway/GiveawayPage';
 import CgvGiveawayDetailPage from 'views/cgv/event/giveaway/detail/DetailPage';
 import LotteEventPage from 'views/lotte/event/EventPage';
+import GiveawayPage from 'views/lotte/event/giveaway/GiveawayPage';
 
 
 
@@ -35,6 +36,10 @@ const MainRoutes = {
     {
       path: 'lotte/event',
       element: <LotteEventPage/>
+    },
+    {
+      path: 'lotte/event/giveaway',
+      element: <GiveawayPage/>,
     },
   ]
 };

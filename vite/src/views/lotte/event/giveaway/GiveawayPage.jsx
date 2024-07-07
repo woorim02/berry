@@ -34,14 +34,27 @@ const GiveawayPage = () => {
       setFilteredEventList(filtered);
     }
   };
+  const convertToDDay = (dateString) => {
+    const targetDate = new Date(dateString);
+    const currentDate = new Date().setHours(0, 0, 0, 0);
+    const difference = targetDate - currentDate;
+    const daysUntil = Math.floor(difference / (1000 * 60 * 60 * 24));
 
+    if (daysUntil > 0) {
+      return `D-${daysUntil}`;
+    } else if (daysUntil < 0) {
+      return `D+${-daysUntil}`;
+    } else {
+      return 'D-Day';
+    }
+  };
   return (
     <Box sx={{ padding: 0 }}>
       <Helmet>
-        <meta name="description" content={`CGV 경품 특전 수량 확인하기, 공식 사이트에서 공개되지 않는 특전 수량 확인이 가능합니다.`} />
+        <meta name="description" content={`롯데시네마 경품 특전 수량 확인하기, 공식 사이트에서 공개되지 않는 특전 수량 확인이 가능합니다.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`CGV 경품 특전 수량 확인하기, 공식 사이트에서 공개되지 않는 특전 수량 확인이 가능합니다.`} />
-        <meta property="og:description" content={`CGV 경품 특전 수량 확인하기, 공식 사이트에서 공개되지 않는 특전 수량 확인이 가능합니다.`} />
+        <meta property="og:title" content={`롯데시네마 경품 특전 수량 확인하기, 공식 사이트에서 공개되지 않는 특전 수량 확인이 가능합니다.`} />
+        <meta property="og:description" content={`롯데시네마 경품 특전 수량 확인하기, 공식 사이트에서 공개되지 않는 특전 수량 확인이 가능합니다.`} />
         <meta property="og:url" content={window.location.href} />
       </Helmet>
       <Box sx={{ marginBottom: 2 }}>
@@ -72,19 +85,19 @@ const GiveawayPage = () => {
             <DisplayAds adSlot='3730871491' />
             {filteredEventList.length > 0 ? (
               filteredEventList.map((item, index) => (
-                <React.Fragment key={item.eventIndex}>
+                <React.Fragment key={item.eventID}>
                   {index === Math.floor(filteredEventList.length / 2) && <DisplayAds adSlot='1843074752' />}
-                  <ListItem button component="a" href={`/cgv/event/giveaway/detail?eventIndex=${item.eventIndex}`}>
+                  <ListItem button component="a" href={`/lotte/event/giveaway/detail?eventIndex=${item.eventID}`}>
                     <ListItemText
                       primary={
                         <Typography variant="h6" sx={{fontSize: '0.95rem'}}>
-                          {item.title}
+                          {item.eventName}
                         </Typography>
                       }
                       secondary={
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="body2" color="textSecondary" sx={{ marginRight: 1 }}>
-                            {item.period}
+                          {item.progressStartDate} ~ {item.progressEndDate}
                           </Typography>
                           <VisibilityIcon fontSize="small" />
                           <Typography variant="body2" color="textSecondary" sx={{ marginLeft: 0.5 }}>
@@ -105,7 +118,7 @@ const GiveawayPage = () => {
                         border: '1px solid #fb4357',
                         borderRadius: '5px'
                       }}>
-                        {item.dDay}
+                        {convertToDDay(item.progressEndDate)}
                       </Box>
                     </ListItemSecondaryAction>
                   </ListItem>
