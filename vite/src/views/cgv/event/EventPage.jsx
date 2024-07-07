@@ -1,29 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Tabs, Tab, TextField, Button, Card, CardContent, CardMedia, Typography, Container, Grid } from '@mui/material';
-import CgvMateApi from '../../../api/cgvmateApi';
+import LotteMateApi from '../../../api/lotteApi';
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [eventType, setEventType] = useState('Special');
-  const api = useRef(new CgvMateApi()).current;
+  const [eventType, setEventType] = useState(20); // 초기 이벤트 타입을 영화로 설정
+  const api = useRef(new LotteMateApi()).current;
 
   useEffect(() => {
-    document.title = 'CGV 이벤트 목록';
+    document.title = '롯데시네마 이벤트 목록';
   }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const eventTypeKey = CgvEventType[eventType];
-      const eventData = await api.getEventListAsync(eventTypeKey);
-      const processedData = eventData.map(item => {
-        if (item.eventName.includes("선착순 무료 쿠폰")) {
-          item.eventName = item.eventName.replace("선착순 무료 쿠폰", "서프라이즈 쿠폰");
-        }
-        return item;
-      });
-      setEvents(processedData);
-      setFilteredEvents(processedData);
+      const eventData = await api.getLotteEventListAsync(eventType);
+      setEvents(eventData);
+      setFilteredEvents(eventData);
     };
     fetchEvents();
   }, [eventType]);
@@ -43,15 +36,15 @@ const EventPage = () => {
   };
 
   const handleCardClick = (event) => {
-    window.location.href = `https://m.cgv.co.kr/WebApp/EventNotiV4/EventDetailGeneralUnited.aspx?seq=${event.eventId}`;
+    window.location.href = `https://event.lottecinema.co.kr/NLCHS/Event/EventTemplateInfo?eventId=${event.eventId}`;
   };
 
   return (
     <Box sx={{ padding: 0 }}>
       <Box component="header" sx={{ marginBottom: 2 }}>
         <Tabs value={eventType} onChange={(e, newValue) => toggleNavItem(newValue)} aria-label="event types" variant='scrollable' scrollButtons="auto" >
-          {Object.keys(CgvEventType).map((type) => (
-            <Tab key={type} label={type} value={type} />
+          {Object.keys(LotteEventType).map((type) => (
+            <Tab key={type} label={LotteEventType[type]} value={type} />
           ))}
         </Tabs>
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2, alignItems: 'center' }}>
@@ -72,19 +65,15 @@ const EventPage = () => {
               <Card onClick={() => handleCardClick(event)} sx={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <CardMedia
                   component="img"
-                  image={event.imageSource}
+                  image={event.imageUrl}
                   alt={event.eventName}
                   sx={{ width: '100%', height: 'auto' }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" component="div" dangerouslySetInnerHTML={{ __html: event.eventName }} />
-                  {event.period !== "상시진행" ? (
-                    <Typography variant="body2" color="textSecondary">
-                      {`${new Date(event.startDate).toLocaleDateString()} ~ ${new Date(event.endDate).toLocaleDateString()}`}
-                    </Typography>
-                  ) : (
-                    <Typography variant="body2" color="textSecondary">상시진행</Typography>
-                  )}
+                  <Typography variant="body2" color="textSecondary">
+                    {`${event.progressStartDate} ~ ${event.progressEndDate}`}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
@@ -97,13 +86,12 @@ const EventPage = () => {
   );
 };
 
-const CgvEventType = {
-  Special: '001',
-  영화: '004',
-  극장: '005',
-  제휴: '006',
-  멤버십_클럽: '008',
-  지난이벤트: '100'
+const LotteEventType = {
+  20: '영화',
+  40: '시사회/무대인사',
+  10: 'HOT',
+  30: '극장',
+  50: '제휴'
 };
 
 export default EventPage;
