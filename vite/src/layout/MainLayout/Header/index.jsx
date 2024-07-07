@@ -29,9 +29,6 @@ const Header = ({ handleLeftDrawerToggle }) => {
           }
         }}
       >
-        <Box component="span" sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1 }}>
-          <LogoSection />
-        </Box>
         <ButtonBase sx={{ borderRadius: '8px', overflow: 'hidden' }}>
           <Avatar
             variant="rounded"
@@ -52,6 +49,11 @@ const Header = ({ handleLeftDrawerToggle }) => {
             <IconMenu2 stroke={1.5} size="1.3rem" />
           </Avatar>
         </ButtonBase>
+        <Box component="span" sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1 }}>
+        <h1 style={{ fontSize: '20px', fontFamily: 'Roboto, sans-serif', fontWeight: '600', marginLeft: '10px' }}>
+        CGV 도우미
+      </h1>
+        </Box>
       </Box>
     </>
   );
