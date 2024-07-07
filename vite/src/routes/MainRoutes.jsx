@@ -8,6 +8,7 @@ import CgvGiveawayPage from 'views/cgv/event/giveaway/GiveawayPage';
 import CgvGiveawayDetailPage from 'views/cgv/event/giveaway/detail/DetailPage';
 import LotteEventPage from 'views/lotte/event/EventPage';
 import GiveawayPage from 'views/lotte/event/giveaway/GiveawayPage';
+import LotteGiveawayDetailPage from 'views/lotte/event/giveaway/detail/DetailPage';
 
 
 
@@ -40,6 +41,10 @@ const MainRoutes = {
     {
       path: 'lotte/event/giveaway',
       element: <GiveawayPage/>,
+    },
+    {
+      path: 'lotte/event/giveaway/detail',
+      element: <LotteGiveawayDetailPage/>,
     },
   ]
 };

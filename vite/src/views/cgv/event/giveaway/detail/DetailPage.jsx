@@ -89,7 +89,7 @@ const GiveawayDetailPage = () => {
           <meta property="og:url" content={window.location.href} />
         </Helmet>
       )}
-      <Box sx={{ display: 'block', paddingBottom: 2 }}>
+      <Box sx={{ display: 'block'}}>
         <Typography variant="h6" sx={{ padding: 1, borderBottom: '1px solid #f1f1f1' }}>잔여 수량 확인</Typography>
       </Box>
 

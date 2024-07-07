@@ -1,151 +1,117 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Box, Typography, Container, List, ListItem, ListItemText, CircularProgress, Grid, Divider } from '@mui/material';
-import CgvMateApi from 'api/cgvmateApi';
-import DisplayAds from 'components/DisplayAds';
+import LotteMateApi from '../../../../../api/lotteApi';
+import DisplayAds from '../../../../../components/DisplayAds';
 
-const api = new CgvMateApi();
+const api = new LotteMateApi();
 
 const GiveawayDetailPage = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const eventIndex = searchParams.get('eventIndex');
-  const areaCode = searchParams.get('areaCode') || '13';
-  const [model, setModel] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const eventID = searchParams.get('eventIndex');
+  const initialAreaCode = searchParams.get('areaCode') || '0001';
+  const [currentArea, setCurrentArea] = useState(initialAreaCode);
+  const [giftId, setGiftId] = useState(null);
+  const [giftName, setGiftName] = useState(null);
   const [info, setInfo] = useState(null);
-  const [currentArea, setCurrentArea] = useState(areaCode || '13');
 
   useEffect(() => {
-    const fetchModelData = async () => {
+    const fetchEventData = async () => {
+      if (!eventID) return;
       try {
-        const modelResponse = await api.getGiveawayEventModelAsync(eventIndex);
-        setModel(modelResponse);
+        const eventModel = await api.getLotteGiveawayEventModelAsync(eventID);
+        setGiftId(eventModel.frGiftID);
+        setGiftName(eventModel.frGiftNm);
+        const eventInfo = await api.getLotteGiveawayInfoAsync(eventID, eventModel.frGiftID);
+        setInfo(eventInfo);
       } catch (error) {
         console.error('Error fetching event data:', error);
       }
     };
-    if (eventIndex) {
-      fetchModelData();
-    }
-  }, [eventIndex]);
+
+    fetchEventData();
+  }, [eventID]);
 
   useEffect(() => {
-    const fetchInfoData = async () => {
+    const fetchAreaData = async () => {
+      if (!eventID || !giftId) return;
       try {
-        if (model) {
-          const infoResponse = await api.getGiveawayInfoAsync(model.giveawayIndex, currentArea);
-          setInfo(infoResponse);
-        }
+        const eventInfo = await api.getLotteGiveawayInfoAsync(eventID, giftId);
+        setInfo(eventInfo);
       } catch (error) {
-        console.error('Error fetching event info:', error);
+        console.error('Error fetching area data:', error);
       }
     };
-    if (model) {
-      fetchInfoData();
-    }
-  }, [model]);
 
-  const selectAreaTheaterList = async (areaCode) => {
-    try {
-      const infoResponse = await api.getGiveawayInfoAsync(model.giveawayIndex, areaCode);
-      setInfo(infoResponse);
-      setCurrentArea(areaCode);
-      navigate(`?eventIndex=${eventIndex}&areaCode=${areaCode}`, { replace: true });
-    } catch (error) {
-      console.error('Error selecting area theater list:', error);
-    }
-  };
+    fetchAreaData();
+  }, [eventID, currentArea, giftId]);
 
-  const countTypeCodeToText = (type) => {
-    switch (type) {
-      case "type4": return "마감 되었습니다.";
-      case "type3": return "재고 소진 임박 입니다.";
-      case "type2.5": return "재고 소진 중입니다.";
-      case "type2": return "재고 보유 가능성이 높습니다.";
-      default: return "unknown";
-    }
-  };
-
-  const countTypeCodeToColor = (type) => {
-    switch (type) {
-      case "type4": return "#d3d3d3";
-      case "type3": return "#fb4357";
-      case "type2.5": return "#ffd966";
-      case "type2": return "#25c326";
-      default: return "unknown";
-    }
+  const selectAreaTheaterList = (areaCode) => {
+    setCurrentArea(areaCode);
+    setSearchParams({ eventIndex: eventID, areaCode: areaCode }, { replace: true });
   };
 
   return (
     <Box sx={{ width: '100%', height: 'auto', padding: 0 }}>
-      {model && (
+      {giftName && (
         <Helmet>
-          <title>{model.contents}</title>
-          <meta name="description" content={`${model.contents} 수량 확인`} />
+          <title>{giftName}</title>
+          <meta name="description" content={`${giftName} 수량 확인`} />
           <meta property="og:type" content="website" />
-          <meta property="og:title" content={`${model.contents} 수량 확인`} />
-          <meta property="og:description" content={`${model.contents} 수량 확인`} />
+          <meta property="og:title" content={`${giftName} 수량 확인`} />
+          <meta property="og:description" content={`${giftName} 수량 확인`} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
       )}
-      <Box sx={{ display: 'block', paddingBottom: 2 }}>
+      <Box sx={{ display: 'block'}}>
         <Typography variant="h6" sx={{ padding: 1, borderBottom: '1px solid #f1f1f1' }}>잔여 수량 확인</Typography>
       </Box>
 
       <Container sx={{ padding: '0px !important' }}>
         <Box sx={{ padding: 1, borderBottom: '1px solid #f1f1f1', display: 'flex', alignItems: 'center' }}>
-          <Typography variant="body1">{model && model.title}</Typography>
+          <Typography variant="body1">{giftName}</Typography>
         </Box>
         <DisplayAds adSlot='8167919304' />
         <Grid container sx={{ height: '100%', flexWrap: 'nowrap' }}>
-          {info && info.AreaList ? (
+          {info ? (
             <>
-              {info.AreaList.reduce((sum, x) => sum + parseInt(x.TheaterCount), 0) > 10 && (
-                <Grid item xs={12} sm={4} md={3} sx={{ backgroundColor: '#f1f1f1', width: '25%', maxWidth: { xs: '150px', sm: 'none' } }}>
-                  <List>
-                    {info.AreaList.map((item) => (
-                      <ListItem
-                        key={item.AreaCode}
-                        button
-                        selected={item.AreaCode === currentArea}
-                        onClick={() => selectAreaTheaterList(item.AreaCode)}
-                        sx={{ padding: '17px 0 16px 17px' }}
-                      >
-                        <ListItemText primary={`${item.AreaName} (${item.TheaterCount})`} />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Grid>
-              )}
-              <Grid item xs={12} sm={8} md={9}>
+              <Grid item xs={12} sm={4} md={3} sx={{ backgroundColor: '#f1f1f1', width: '25%', maxWidth: { xs: '150px', sm: 'none' } }}>
                 <List>
-                  {info.TheaterList.map((item, i) => (
-                    <ListItem key={i} sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 1, alignItems:'flex-start' }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                        <Typography variant="body1" sx={{display: 'flex', alignItems: 'center'}}>{item.TheaterName}</Typography>
-                        <Box
-                          sx={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '60px',
-                            height: '24px',
-                            fontSize: '0.85em',
-                            color: '#666',
-                            backgroundColor: countTypeCodeToColor(item.CountTypeCode),
-                            borderRadius: '30px',
-                          }}
-                        >
-                          {item.GiveawayRemainCount}
-                        </Box>
-                      </Box>
-                      <Typography variant="body2" color="textSecondary" sx={{ marginTop: 1 }}>
-                        {countTypeCodeToText(item.CountTypeCode)}
-                      </Typography>
-                      <Divider sx={{ marginTop: 1 }} />
+                  {info.cinemaDivisions.map((item) => (
+                    <ListItem
+                      key={item.detailDivisionCode}
+                      button
+                      selected={item.detailDivisionCode === currentArea}
+                      onClick={() => selectAreaTheaterList(item.detailDivisionCode)}
+                      sx={{ padding: '17px 0 16px 17px' }}
+                    >
+                      <ListItemText primary={`${item.groupNameKR} (${item.cinemaCount})`} />
                     </ListItem>
                   ))}
+                </List>
+              </Grid>
+              <Grid item xs={12} sm={8} md={9}>
+                <List>
+                  {info.cinemaDivisionGoods
+                    .filter((item) => item.detailDivisionCode === currentArea)
+                    .map((item, i) => (
+                      <ListItem key={i} sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 1 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                          <Typography variant="body1" sx={{ display: 'flex', alignContent: 'center' }}>{item.cinemaNameKR}</Typography>
+                          <Box sx={{display: 'flex', alignContent:'center'}}>
+                            <Typography color=' #ED4C6B'>
+                              {item.cnt}
+                            </Typography>
+
+                            <Typography>
+                              개 이상
+                            </Typography>
+                          </Box>
+                        </Box>
+                        <Divider sx={{ marginTop: 1 }} />
+                      </ListItem>
+                    ))}
                 </List>
               </Grid>
             </>
