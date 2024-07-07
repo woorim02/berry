@@ -7,8 +7,10 @@ import CgvEventPage from 'views/cgv/event/EventPage';
 import CgvGiveawayPage from 'views/cgv/event/giveaway/GiveawayPage';
 import CgvGiveawayDetailPage from 'views/cgv/event/giveaway/detail/DetailPage';
 import LotteEventPage from 'views/lotte/event/EventPage';
-import GiveawayPage from 'views/lotte/event/giveaway/GiveawayPage';
+import LotteGiveawayPage from 'views/lotte/event/giveaway/GiveawayPage';
 import LotteGiveawayDetailPage from 'views/lotte/event/giveaway/detail/DetailPage';
+import MegaboxGiveawayPage from 'views/megabox/event/giveaway/GiveawayPage';
+import MegaboxGiveawayDetailPage from 'views/megabox/event/giveaway/detail/DetailPage';
 
 
 
@@ -40,11 +42,19 @@ const MainRoutes = {
     },
     {
       path: 'lotte/event/giveaway',
-      element: <GiveawayPage/>,
+      element: <LotteGiveawayPage/>,
     },
     {
       path: 'lotte/event/giveaway/detail',
       element: <LotteGiveawayDetailPage/>,
+    },
+    {
+      path: 'megabox/event/giveaway',
+      element: <MegaboxGiveawayPage/>,
+    },
+    {
+      path: 'megabox/event/giveaway/detail',
+      element: <MegaboxGiveawayDetailPage/>,
     },
   ]
 };

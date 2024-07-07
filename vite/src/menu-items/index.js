@@ -6,7 +6,7 @@ import megabox from './megabox';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [other, cgv, lotte, megabox]
+  items: [cgv, lotte, megabox]
 };
 
 export default menuItems;
