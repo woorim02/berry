@@ -34,6 +34,11 @@ const GiveawayPage = () => {
       setFilteredEventList(filtered);
     }
   };
+  const decodeHtml = (html) => {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  };
   return (
     <Box sx={{ padding: 0 }}>
       <Helmet>
@@ -78,7 +83,7 @@ const GiveawayPage = () => {
                       primary={
                         <Box sx={{ display: 'flex', alignItems: 'center', marginRight:'5px' }}>
                           <Typography variant="h6" sx={{ fontSize: '0.95rem' }}>
-                            {item.title}
+                             <span dangerouslySetInnerHTML={{ __html: decodeHtml(item.title) }} />
                           </Typography>
                         </Box>
                       }

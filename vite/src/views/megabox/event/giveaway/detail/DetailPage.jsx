@@ -46,6 +46,12 @@ const GiveawayDetailPage = () => {
         return 'inherit';
     }
   };
+  const decodeHtml = (html) => {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  };
+  const currentAreaInfo = info?.areas?.find((area) => area.code === currentArea);
 
   return (
     <Box sx={{ width: '100%', height: 'auto', padding: 0 }}>
@@ -73,7 +79,7 @@ const GiveawayDetailPage = () => {
             <>
               <Grid item xs={12} sm={4} md={3} sx={{ backgroundColor: '#f1f1f1', width: '25%', maxWidth: { xs: '150px', sm: 'none' } }}>
                 <List>
-                  {info.areas.map((item) => (
+                  {info.areas?.map((item) => (
                     <ListItem
                       key={item.code}
                       button
@@ -88,23 +94,21 @@ const GiveawayDetailPage = () => {
               </Grid>
               <Grid item xs={12} sm={8} md={9}>
                 <List>
-                  {info.areas
-                    .find((area) => area.code === currentArea)
-                    .infos.map((item, i) => (
-                      <ListItem key={i} sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 1 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                          <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
-                            <span dangerouslySetInnerHTML={{ __html: item.name }} />
+                  {currentAreaInfo?.infos?.map((item, i) => (
+                    <ListItem key={i} sx={{ display: 'flex', flexDirection: 'column', paddingTop: 1, paddingBottom: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+                          <span dangerouslySetInnerHTML={{ __html: item.title }} />
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '60px'}}>
+                          <Typography sx={{ color: getStatusColor(item.fAc), fontWeight: '600 !important'  }}>
+                            {item.fAc}
                           </Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: '60px'}}>
-                            <Typography sx={{ color: getStatusColor(item.fAc), fontWeight: '600 !important'  }}>
-                              {item.fAc}
-                            </Typography>
-                          </Box>
                         </Box>
-                        <Divider sx={{ marginTop: 1 }} />
-                      </ListItem>
-                    ))}
+                      </Box>
+                      <Divider sx={{ marginTop: 1 }} />
+                    </ListItem>
+                  ))}
                 </List>
               </Grid>
             </>
