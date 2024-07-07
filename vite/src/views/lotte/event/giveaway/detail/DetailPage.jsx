@@ -45,7 +45,7 @@ const GiveawayDetailPage = () => {
     };
 
     fetchAreaData();
-  }, [eventID, currentArea, giftId]);
+  }, [eventID, giftId]);
 
   const selectAreaTheaterList = (areaCode) => {
     setCurrentArea(areaCode);
