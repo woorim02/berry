@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,7 +17,11 @@ import { IconMenu2 } from '@tabler/icons-react';
 
 const Header = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate('/');
+  };
   return (
     <>
       {/* logo & toggler button */}
@@ -49,10 +54,10 @@ const Header = ({ handleLeftDrawerToggle }) => {
             <IconMenu2 stroke={1.5} size="1.3rem" />
           </Avatar>
         </ButtonBase>
-        <Box component="span" sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1 }}>
-        <h1 style={{ fontSize: '20px', fontFamily: 'Roboto, sans-serif', fontWeight: '600', marginLeft: '10px' }}>
-        CGV 도우미
-      </h1>
+        <Box component="span" sx={{ display: { xs: 'block', md: 'block' }, flexGrow: 1 }} onClick={handleClick}>
+          <h1 style={{ fontSize: '20px', fontFamily: 'Roboto, sans-serif', fontWeight: '600', marginLeft: '10px' }}>
+            CGV 도우미
+          </h1>
         </Box>
       </Box>
     </>
